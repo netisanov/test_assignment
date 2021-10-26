@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import Person, Coordinate
 
 
@@ -17,4 +18,3 @@ class CoordinateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coordinate
         fields = ('id', 'person', 'created', 'latitude', 'longitude')
-
