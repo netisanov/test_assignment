@@ -1,26 +1,28 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 class Person(models.Model):
-    GENDER = [
-        ('FE', 'Female'),
-        ('MA', 'Male'),
-    ]
+
+    class Gender(models.TextChoices):
+        FEMALE = 'FE', _('Female')
+        MALE = 'MA', _('Male')
+
     name = models.CharField(max_length=40)
     surname = models.CharField(max_length=40, blank=True)
     gender = models.CharField(
         max_length=2,
-        choices=GENDER,
-        default='MA',
+        choices=Gender.choices,
+        default=Gender.FEMALE,
     )
-    age = models.CharField(
-        max_length=2,
-        blank=True
-    )
+    age = models.CharField(max_length=2, blank=True)
 
     def __str__(self):
         return self.name
+
+    def get_gender(self):
+        return self.gender
 
 
 class Coordinate(models.Model):
