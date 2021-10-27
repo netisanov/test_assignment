@@ -25,7 +25,6 @@ class PersonSerializer(serializers.Serializer):
 
 
 class CoordinateSerializer(serializers.Serializer):
-    id = serializers.HyperlinkedRelatedField(view_name='coordinate-detail', read_only=True)
     person = serializers.HyperlinkedRelatedField(view_name='person-detail', read_only=True)
     latitude = serializers.FloatField(max_value=90, min_value=-90, required=False)
     longitude = serializers.FloatField(max_value=180, min_value=-180, required=False)
@@ -41,3 +40,16 @@ class CoordinateSerializer(serializers.Serializer):
         instance.created = validated_data.get('created', instance.gender)
         instance.save()
         return instance
+
+
+class GeneratorSerializer(serializers.Serializer):
+    person_id = serializers.IntegerField()
+    latitude = serializers.FloatField(max_value=90, min_value=-90)
+    longitude = serializers.FloatField(max_value=180.0, min_value=-180)
+    start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField()
+
+
+    def create(self, validated_data):
+        return Coordinate.objects.create(**validated_data)
+
